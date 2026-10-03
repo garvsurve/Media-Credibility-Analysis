@@ -13,7 +13,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-path = "./Desktop/ProjectGurukul/Fake News Detection/"
+path = "./"
 true_df = pd.read_csv(path + 'True.csv')
 fake_df = pd.read_csv(path + 'Fake.csv')
 
@@ -65,9 +65,9 @@ nltk.download('wordnet')
 def clean_data(text):
     text = text.lower() 
     text = re.sub('[^a-zA-Z]' , ' ' , text)
-    token = row.split() 
+    token = text.split() 
     token = [lemmatizer.lemmatize(word) for word in token if not word in stopwords]  
-    clean_news = ' '.join(news) 
+    clean_news = ' '.join(token) 
     
     return clean_news
 
@@ -89,14 +89,14 @@ y.head()
 from sklearn.model_selection import train_test_split
 train_X , test_X , train_y , test_y = train_test_split(X , y , test_size = 0.2 ,random_state = 0)
 
-vec_train = vectorizer.fit_transform(train_data)
+vec_train = vectorizer.fit_transform(train_X)
 
 vec_train = vec_train.toarray()
 
 vec_test = vectorizer.transform(test_X).toarray()
 
-train_data = pd.DataFrame(vec_train , columns=vectorizer.get_feature_names())
-test_data = pd.DataFrame(vec_test , columns= vectorizer.get_feature_names())
+train_data = pd.DataFrame(vec_train , columns=vectorizer.get_feature_names_out())
+test_data = pd.DataFrame(vec_test , columns= vectorizer.get_feature_names_out())
 
 """## Multinomial NB"""
 
